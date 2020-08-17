@@ -1,0 +1,52 @@
+node
+
+{
+
+
+
+def mavenHome = tool name: "maven 3.6.3"
+
+
+
+stage('checkout code')
+
+{
+
+git branch: 'development', credentialsId: 'ca707f73-95ef-47cf-9502-37f9cf2e3341', url: 'https://github.com/mothiswaran/maven-web-application.git'
+
+}
+
+
+
+stage('build')
+
+{
+
+sh "${mavenHome}/bin/mvn clean package"
+
+}
+
+stage('executesonarqubereport')
+{
+sh "${mavenHome}/bin/mvn sonar:sonar"
+}
+
+stage('upload into nexus')
+{
+sh "${mavenHome}/bin/mvn deploy"
+}
+
+
+
+
+stage('deploy into tomcat')
+{
+sshagent(['150796c8-1691-4d56-ab60-6f2fe0740034'])
+{
+sh "scp target/maven-web-application.war ec2-user@15.206.173.241:/opt/apache-tomcat-9.0.37/webapps/"
+}
+}
+
+
+
+}
