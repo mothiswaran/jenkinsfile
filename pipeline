@@ -43,7 +43,7 @@ stage('deploy into tomcat')
 {
 sshagent(['150796c8-1691-4d56-ab60-6f2fe0740034'])
 {
-sh "scp target/maven-web-application.war ec2-user@13.232.85.2 :/opt/apache-tomcat-9.0.37/webapps/"
+sh "scp target/maven-web-application.war ec2-user@13.232.85.2:/opt/apache-tomcat-9.0.37/webapps/"
 }
 }
 
